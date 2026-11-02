@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chalkboard – free explainers for curious students</title>
+<meta name="description" content="Short, clear educational posts on study skills, science, maths, tech and languages. Free for everyone.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --board:#12352f; --board-2:#1b4a41; --chalk:#f4f7f1; --paper:#eef3ec;
+  --yellow:#f2c94c; --sky:#bcd8ee; --ink:#14201d; --muted:#4d5f59; --line:#cfdbd2;
+  --card:#ffffff;
+  --head:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#0f1a17; --card:#16251f; --ink:#e9f0ea; --muted:#a3b4ac; --line:#2a3d36}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.65}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+header.top{background:var(--board);color:var(--chalk)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+.brand{font-family:var(--head);font-weight:800;font-size:22px;text-decoration:none;letter-spacing:.2px}
+.brand span{color:var(--yellow)}
+.nav a.link{font-family:var(--head);font-weight:500;font-size:15px;text-decoration:none;margin-left:20px;opacity:.9}
+.nav a.link:hover{text-decoration:underline}
+
+.hero{padding:48px 0 64px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+.hero h1{font-family:var(--head);font-weight:800;font-size:clamp(34px,5.5vw,60px);line-height:1.05;margin:0 0 16px;letter-spacing:-.5px}
+.hero p{margin:0 0 24px;max-width:46ch;font-size:19px;color:#dbe7df}
+.btn{display:inline-block;background:var(--yellow);color:#1b1b12;font-family:var(--head);font-weight:700;font-size:16px;padding:12px 20px;border-radius:8px;border:0;text-decoration:none;cursor:pointer}
+.btn:hover{background:#ffd95f}
+.btn.ghost{background:transparent;color:var(--chalk);border:2px solid var(--chalk);margin-left:10px}
+.btn.ghost:hover{background:rgba(255,255,255,.1)}
+.board{background:var(--board-2);border:6px solid #8a6a43;border-radius:10px;padding:22px 24px;font-family:var(--head);color:var(--chalk);box-shadow:inset 0 0 40px rgba(0,0,0,.25)}
+.board small{display:block;color:var(--yellow);font-size:14px;margin-bottom:8px}
+.board .eq{font-size:26px;font-weight:700;line-height:1.35}
+.board .tip{margin-top:14px;font-size:16px;font-weight:500;color:#cfe0d6;border-top:1px dashed rgba(255,255,255,.3);padding-top:12px}
+
+.tools{padding:36px 0 8px}
+.tools h2{font-family:var(--head);font-size:30px;margin:0 0 14px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.search{flex:1 1 240px;font:inherit;font-size:16px;padding:11px 14px;border:2px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{font-family:var(--head);font-weight:500;font-size:15px;padding:7px 14px;border-radius:999px;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--board);border-color:var(--board);color:var(--chalk)}
+.count{color:var(--muted);font-size:15px;margin:14px 0 0}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px;padding:20px 0 56px}
+.post{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--c,#12352f);border-radius:6px 12px 12px 6px;padding:20px;display:flex;flex-direction:column}
+.post .meta{font-family:var(--head);font-size:14px;color:var(--muted);margin-bottom:8px}
+.post h3{font-family:var(--head);font-size:21px;line-height:1.25;margin:0 0 8px}
+.post p{margin:0 0 16px;font-size:16.5px;color:var(--muted);flex:1}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.read{font-family:var(--head);font-weight:700;font-size:15px;background:none;border:0;padding:6px 0;color:var(--ink);cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--yellow);text-decoration-thickness:3px}
+.save{font-family:var(--head);font-size:14px;font-weight:500;border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:8px;padding:5px 10px;cursor:pointer}
+.save[aria-pressed="true"]{background:var(--yellow);border-color:var(--yellow);color:#1b1b12}
+.empty{grid-column:1/-1;padding:32px;border:2px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center}
+
+dialog{width:min(720px,94vw);max-height:90vh;border:0;border-radius:14px;padding:0;background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(8,20,16,.7)}
+.d-head{background:var(--board);color:var(--chalk);padding:22px 28px}
+.d-head .meta{font-family:var(--head);font-size:14px;color:var(--yellow)}
+.d-head h2{font-family:var(--head);font-size:clamp(24px,4vw,34px);line-height:1.15;margin:6px 0 0}
+.d-body{padding:22px 28px 8px;overflow:auto;max-height:55vh}
+.d-body p{margin:0 0 16px;max-width:62ch}
+.d-body .try{background:var(--paper);border-left:5px solid var(--yellow);padding:12px 16px;border-radius:4px}
+.d-foot{display:flex;justify-content:space-between;padding:14px 28px 22px;gap:10px}
+.d-foot .btn{padding:9px 16px}
+.d-foot .btn.close{background:transparent;border:2px solid var(--line);color:var(--ink)}
+
+.about{background:var(--board);color:var(--chalk);padding:56px 0}
+.about .cols{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.about h2{font-family:var(--head);font-size:30px;margin:0 0 12px}
+.about p{margin:0 0 14px;color:#dbe7df}
+form.sub{display:flex;flex-wrap:wrap;gap:10px}
+form.sub input{flex:1 1 200px;font:inherit;font-size:16px;padding:11px 14px;border-radius:8px;border:2px solid transparent}
+.msg{min-height:1.6em;color:var(--yellow);font-family:var(--head);font-size:15px;margin-top:10px}
+footer{padding:22px 0;font-family:var(--head);font-size:14px;color:var(--muted);text-align:center}
+
+@media (max-width:760px){
+  .hero,.about .cols{grid-template-columns:1fr}
+  .hero{padding:32px 0 44px}
+  .btn.ghost{margin:10px 0 0}
+  .nav a.link.hide{display:none}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <nav class="nav" aria-label="Main">
+      <a class="brand" href="#top">Chalk<span>board</span></a>
+      <div>
+        <a class="link hide" href="#posts">Posts</a>
+        <a class="link hide" href="#about">About</a>
+        <a class="link" href="#subscribe">Subscribe</a>
+      </div>
+    </nav>
+    <section class="hero" id="top">
+      <div>
+        <h1>Learn one clear idea at a time.</h1>
+        <p>Short explainers on study skills, science, maths, tech and languages. Free to read, written in plain words, and ready in five minutes.</p>
+        <a class="btn" href="#posts">Start reading</a>
+        <a class="btn ghost" href="#subscribe">Get a weekly post</a>
+      </div>
+      <div class="board" aria-label="Featured idea">
+        <small>Idea of the week</small>
+        <div class="eq">Review on day 1, 3, 7 and 21. You will remember more than if you read it four times in one night.</div>
+        <div class="tip">Read: “Spaced repetition” in Study skills</div>
+      </div>
+    </section>
+  </div>
+</header>
+
+<main>
+  <section class="tools wrap" id="posts">
+    <h2>All posts</h2>
+    <div class="bar">
+      <label for="q" class="sr" style="position:absolute;left:-9999px">Search posts</label>
+      <input id="q" class="search" type="search" placeholder="Search posts, e.g. memory or DNS">
+      <button class="chip" id="savedBtn" aria-pressed="false">Reading list (<span id="savedCount">0</span>)</button>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Filter by topic"></div>
+    <p class="count" id="count" aria-live="polite"></p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap cols">
+      <div>
+        <h2>Why Chalkboard exists</h2>
+        <p>Good explanations should not sit behind a paywall or a wall of jargon. Chalkboard supports UN Sustainable Development Goal 4, Quality Education, by making clear learning material free and easy to open on any phone.</p>
+        <p>Every post is short, has one main idea, and ends with something you can try today.</p>
+      </div>
+      <div id="subscribe">
+        <h2>Get one post a week</h2>
+        <p>Enter your email and we will send the next explainer when it is published.</p>
+        <form class="sub" id="subForm" novalidate>
+          <label for="email" style="position:absolute;left:-9999px">Email address</label>
+          <input id="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+          <button class="btn" type="submit">Subscribe</button>
+        </form>
+        <div class="msg" id="msg" role="status"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Chalkboard · free learning for everyone · supports SDG 4, Quality Education</footer>
+
+<dialog id="dlg" aria-labelledby="dTitle">
+  <div class="d-head"><div class="meta" id="dMeta"></div><h2 id="dTitle"></h2></div>
+  <div class="d-body" id="dBody"></div>
+  <div class="d-foot">
+    <button class="btn" id="dSave" type="button"></button>
+    <button class="btn close" id="dClose" type="button">Close</button>
+  </div>
+</dialog>
+
+<script>
+const COLORS={"Study skills":"#d9a800","Science":"#2f7fb8","Maths":"#c0553f","Tech":"#4a8a5c","Languages":"#8a5fb0"};
+const POSTS=[
+{id:"spaced",cat:"Study skills",min:4,title:"Spaced repetition: review less, remember more",sum:"Why short reviews spread over days beat one long night of cramming.",
+ body:["Your brain forgets new material quickly, then more slowly over time. Each time you recall something just as it starts to fade, the memory gets stronger and lasts longer before the next dip.","So instead of reading a chapter four times tonight, read it once and review it on day 1, day 3, day 7 and day 21. Each review can take five minutes.","<span class='try'>Try today: write the date you studied a topic, then put its next three review dates in your calendar.</span>"]},
+{id:"recall",cat:"Study skills",min:4,title:"Active recall: close the book and test yourself",sum:"Pulling answers out of memory teaches more than re-reading ever does.",
+ body:["Re-reading feels easy, which tricks you into thinking you know the topic. Trying to recall it without looking is harder, and that effort is what builds memory.","After a section, close your notes and write down everything you remember. Then check what you missed and focus on those gaps.","<span class='try'>Try today: turn each heading in your notes into a question and answer it from memory.</span>"]},
+{id:"sky",cat:"Science",min:3,title:"Why is the sky blue?",sum:"Sunlight is a mix of colours, and the air scatters some of them far more than others.",
+ body:["Sunlight looks white but contains every colour. When it enters the atmosphere, gas molecules scatter the light in all directions.","Blue light has a short wavelength and is scattered much more strongly than red light. So blue reaches your eyes from every part of the sky.","At sunset the light travels through more air, most of the blue is scattered away, and the reds and oranges are what remain."]},
+{id:"photo",cat:"Science",min:4,title:"Photosynthesis in plain words",sum:"How a leaf turns light, water and air into food and oxygen.",
+ body:["Plants make their own food. Inside leaf cells, chloroplasts use light energy to join carbon dioxide from the air with water from the soil.","The result is glucose, a sugar the plant uses for energy and growth, and oxygen, which is released through tiny pores called stomata.","In short: carbon dioxide + water + light gives glucose + oxygen."]},
+{id:"fractions",cat:"Maths",min:3,title:"A fraction is just a division",sum:"Seeing 3/4 as 3 ÷ 4 makes comparing and converting fractions easier.",
+ body:["The line in a fraction means “divided by”. So 3/4 is the same as 3 ÷ 4, which is 0.75.","This helps you compare: 5/8 is 0.625 and 2/3 is about 0.667, so 2/3 is slightly bigger. It also explains why you cannot have a zero on the bottom: you cannot divide by zero.","<span class='try'>Try today: convert 1/5, 2/5 and 3/8 to decimals by dividing.</span>"]},
+{id:"dns",cat:"Tech",min:4,title:"How your browser finds a website",sum:"The quick lookup that turns a name like example.com into an address.",
+ body:["Computers reach each other by numeric IP addresses, but people remember names. The Domain Name System, or DNS, is the phone book that connects the two.","When you type a name, your device asks a DNS server for its IP address. If that server does not know, it asks others until it finds the answer, then remembers it for a while so the next visit is faster.","Only after this lookup does your browser connect to the site and ask for the page."]},
+{id:"bigo",cat:"Tech",min:5,title:"Big-O notation without the fear",sum:"A simple way to describe how a program slows down as its input grows.",
+ body:["Big-O describes how the work grows when the input gets bigger. Looking up one item in a list by checking each entry is O(n): double the list, double the work.","Binary search on a sorted list is O(log n): doubling the list adds just one more step. Comparing every pair of items is O(n²): doubling the list makes about four times the work.","<span class='try'>Try today: for a loop inside a loop over the same list, say which Big-O it is.</span>"]},
+{id:"input",cat:"Languages",min:4,title:"Learn a language with comprehensible input",sum:"Why understanding most of what you read and hear beats memorising word lists.",
+ body:["You pick up a language fastest from material you mostly understand, with just a few new words in each sentence. This is called comprehensible input.","Choose stories, podcasts or videos slightly above your level. Guess new words from context and note only the ones that keep appearing.","<span class='try'>Try today: listen to five minutes of something in your target language and write down three words you caught.</span>"]}
+];
+
+const $=s=>document.querySelector(s);
+let cat="All",q="",onlySaved=false,saved=new Set(),current=null;
+try{saved=new Set(JSON.parse(localStorage.getItem("cb-saved")||"[]"))}catch(e){}
+function persist(){try{localStorage.setItem("cb-saved",JSON.stringify([...saved]))}catch(e){}}
+
+const cats=["All",...Object.keys(COLORS)];
+$("#chips").innerHTML=cats.map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c==="All"}">${c}</button>`).join("");
+$("#chips").addEventListener("click",e=>{const b=e.target.closest("[data-c]");if(!b)return;cat=b.dataset.c;
+  document.querySelectorAll("#chips .chip").forEach(x=>x.setAttribute("aria-pressed",x.dataset.c===cat));render()});
+$("#q").addEventListener("input",e=>{q=e.target.value.trim().toLowerCase();render()});
+$("#savedBtn").addEventListener("click",e=>{onlySaved=!onlySaved;e.currentTarget.setAttribute("aria-pressed",onlySaved);render()});
+
+function render(){
+  $("#savedCount").textContent=saved.size;
+  const list=POSTS.filter(p=>(cat==="All"||p.cat===cat)&&(!onlySaved||saved.has(p.id))&&
+    (!q||(p.title+p.sum+p.cat+p.body.join(" ")).toLowerCase().includes(q)));
+  $("#count").textContent=list.length+(list.length===1?" post":" posts");
+  $("#grid").innerHTML=list.length?list.map(p=>`
+    <article class="post" style="--c:${COLORS[p.cat]}">
+      <div class="meta">${p.cat} · ${p.min} min read</div>
+      <h3>${p.title}</h3><p>${p.sum}</p>
+      <div class="row">
+        <button class="read" data-read="${p.id}">Read post</button>
+        <button class="save" data-save="${p.id}" aria-pressed="${saved.has(p.id)}">${saved.has(p.id)?"Saved":"Save"}</button>
+      </div></article>`).join("")
+    :`<div class="empty">${onlySaved?"Your reading list is empty. Tap Save on any post to keep it here.":"No posts match your search. Try a different word or choose All."}</div>`;
+}
+$("#grid").addEventListener("click",e=>{
+  const r=e.target.closest("[data-read]"),s=e.target.closest("[data-save]");
+  if(r)openPost(r.dataset.read);
+  if(s)toggle(s.dataset.save);
+});
+function toggle(id){saved.has(id)?saved.delete(id):saved.add(id);persist();render();if(current===id)dSaveLabel()}
+function dSaveLabel(){$("#dSave").textContent=saved.has(current)?"Saved to reading list":"Save to reading list"}
+function openPost(id){
+  const p=POSTS.find(x=>x.id===id);current=id;
+  $("#dMeta").textContent=p.cat+" · "+p.min+" min read";
+  $("#dTitle").textContent=p.title;
+  $("#dBody").innerHTML=p.body.map(t=>t.startsWith("<span class='try'>")?`<p class="try">${t.replace(/<\/?span[^>]*>/g,"")}</p>`:`<p>${t}</p>`).join("");
+  $("#dBody").scrollTop=0;dSaveLabel();$("#dlg").showModal();
+}
+$("#dSave").addEventListener("click",()=>toggle(current));
+$("#dClose").addEventListener("click",()=>$("#dlg").close());
+$("#dlg").addEventListener("click",e=>{if(e.target.id==="dlg")e.target.close()});
+
+$("#subForm").addEventListener("submit",e=>{
+  e.preventDefault();const v=$("#email").value.trim();
+  $("#msg").textContent=/^\S+@\S+\.\S+$/.test(v)?"Subscribed. Your first post arrives next week.":"Enter a valid email address, like name@example.com.";
+});
+render();
+</script>
+</body>
+</html>
